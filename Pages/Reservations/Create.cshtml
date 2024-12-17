@@ -1,0 +1,49 @@
+﻿@page
+@model ProiectMediiBun.Pages.Reservations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Reservation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Reservation.Data_Rezervarii" class="control-label"></label>
+                <input asp-for="Reservation.Data_Rezervarii" class="form-control" />
+                <span asp-validation-for="Reservation.Data_Rezervarii" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <span class="text-danger">*</span>
+                <label asp-for="Reservation.Durata" class="control-label"></label>
+                <input asp-for="Reservation.Durata" class="form-control" />
+                <span asp-validation-for="Reservation.Durata" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reservation.MemberID" class="control-label"></label>
+                <select asp-for="Reservation.MemberID" class ="form-control" asp-items="ViewBag.MemberID">Member Name</select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reservation.TerenID" class="control-label">Teren Tip</label>
+                <select asp-for="Reservation.TerenID" class ="form-control" asp-items="ViewBag.TerenID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

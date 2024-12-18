@@ -33,6 +33,32 @@
                 <span asp-validation-for="Membership.Data_Expirare" class="text-danger"></span>
             </div>
             <div class="form-group">
+            <div class="table">
+            <table>
+             <tr>
+              @{
+                int contor = 0;
+        foreach (var cat in Model.AssignedCategoryDataList)
+        {
+        if (contor++ % 3 == 0)
+           {
+            @:</tr><tr>
+               }
+            @:<td>
+         <input type="checkbox"
+         name="categoriiselectate"
+        value="@cat.CategoryID"
+        @(Html.Raw(cat.Assigned ?
+        "checked=\"checked\"" : "")) />
+         @cat.CategoryID @: @cat.Name
+         @:</td>
+         }
+         @:</tr>    
+        }
+         </table>
+         </div>
+         </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

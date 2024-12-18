@@ -26,6 +26,8 @@ namespace ProiectMediiBun.Models
             }
         }
         public ICollection<Member>? Members { get; set; }
+        public ICollection<MembershipCategory>? MembershipCategories { get; set; }
+
     }
 }
 

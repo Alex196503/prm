@@ -11,7 +11,7 @@ using ProiectMediiBun.Models;
 
 namespace ProiectMediiBun.Pages.Memberships
 {
-    public class EditModel : PageModel
+    public class EditModel : MembershipCategoriesPageModel
     {
         private readonly ProiectMediiBun.Data.ProiectMediiBunContext _context;
 
@@ -29,24 +29,57 @@ namespace ProiectMediiBun.Pages.Memberships
             {
                 return NotFound();
             }
-
-            var membership =  await _context.Membership.FirstOrDefaultAsync(m => m.ID == id);
-            if (membership == null)
+            Membership = await _context.Membership
+                .Include(m => m.MembershipCategories)  
+                .ThenInclude(m => m.Category)          
+                .Include(m => m.Members)               
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (Membership == null)
             {
                 return NotFound();
             }
-            Membership = membership;
-            return Page();
+            PopulateAssignedCategoryData(_context, Membership);
+            var MemberList = _context.Member.Select(x => new
+            {
+                x.ID,
+                FullName = x.LastName + " " + x.FirstName
+            });
+            ViewData["MemberID"] = new SelectList(MemberList, "ID", "FullName");
+                        return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int ?id, string[] categoriiselectate)
+
         {
-            if (!ModelState.IsValid)
+            if(id==null)
             {
-                return Page();
+                return NotFound();
             }
+            var membershipdeupdatat = await _context.Membership
+                 .Include(i=>i.Members)
+                .Include(i => i.MembershipCategories)
+                .ThenInclude(i => i.Category)
+                .FirstOrDefaultAsync(s => s.ID == id);
+               if(membershipdeupdatat == null)
+            {
+                return NotFound();
+            }
+            if (await TryUpdateModelAsync<Membership>(membershipdeupdatat,
+                "Membership",
+                i => i.MembershipName, i => i.Data_Start, i => i.Data_Expirare, i => i.Members))
+            {
+                ActualizeazaCategoriileAbonamentelor(_context, categoriiselectate, membershipdeupdatat);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            ActualizeazaCategoriileAbonamentelor(_context, categoriiselectate, membershipdeupdatat);
+            PopulateAssignedCategoryData(_context, membershipdeupdatat);
+            return Page();
+
+           
 
             _context.Attach(Membership).State = EntityState.Modified;
 

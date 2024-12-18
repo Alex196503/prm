@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ProiectMediiBun.Data;
 using ProiectMediiBun.Models;
 
-namespace ProiectMediiBun.Pages.Memberships
+namespace ProiectMediiBun.Pages.Categories
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace ProiectMediiBun.Pages.Memberships
         }
 
         [BindProperty]
-        public Membership Membership { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,18 +29,15 @@ namespace ProiectMediiBun.Pages.Memberships
                 return NotFound();
             }
 
-            var membership = await _context.Membership
-                .Include(m => m.MembershipCategories)
-                .ThenInclude(mc => mc.Category)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (membership == null)
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Membership = membership;
+                Category = category;
             }
             return Page();
         }
@@ -52,11 +49,11 @@ namespace ProiectMediiBun.Pages.Memberships
                 return NotFound();
             }
 
-            var membership = await _context.Membership.FindAsync(id);
-            if (membership != null)
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
             {
-                Membership = membership;
-                _context.Membership.Remove(Membership);
+                Category = category;
+                _context.Category.Remove(Category);
                 await _context.SaveChangesAsync();
             }
 

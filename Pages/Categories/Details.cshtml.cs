@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ProiectMediiBun.Data;
 using ProiectMediiBun.Models;
 
-namespace ProiectMediiBun.Pages.Memberships
+namespace ProiectMediiBun.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace ProiectMediiBun.Pages.Memberships
             _context = context;
         }
 
-        public Membership Membership { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,17 +28,14 @@ namespace ProiectMediiBun.Pages.Memberships
                 return NotFound();
             }
 
-            var membership = await _context.Membership
-                .Include(m=>m.MembershipCategories)
-                .ThenInclude(mc=>mc.Category)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (membership == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Membership = membership;
+                Category = category;
             }
             return Page();
         }

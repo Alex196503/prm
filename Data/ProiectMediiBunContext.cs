@@ -38,5 +38,6 @@ namespace ProiectMediiBun.Data
                 .HasForeignKey(m => m.TrainerID)
                 .OnDelete(DeleteBehavior.Cascade); 
         }
+        public DbSet<ProiectMediiBun.Models.Category> Category { get; set; } = default!;
     }
 }

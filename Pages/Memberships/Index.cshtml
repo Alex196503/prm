@@ -22,12 +22,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.Membership[0].Data_Expirare)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Membership[0].MembershipCategories)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Membership) {
-        <tr>
+@foreach (var item in Model.MembershipD.Memberships) {
+            string RandSelectat = "";
+            if(item.ID==Model.MembershipID)
+            {
+                RandSelectat = "table-success";
+            }
+            <tr class="@RandSelectat">
             <td>
                 @Html.DisplayFor(modelItem => item.MembershipName)
             </td>
@@ -36,6 +44,14 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Data_Expirare)
+            </td>
+            <td>
+                @{
+                    foreach(var category in item.MembershipCategories)
+                    {
+                            @category.Category.CategoryName <br />
+                    }
+                }
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |

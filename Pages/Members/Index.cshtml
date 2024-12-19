@@ -1,4 +1,4 @@
-﻿@page 
+﻿@page "{id:int?}"
 @model Proiect_Medii.Pages.Members.IndexModel
 
 @{
@@ -10,6 +10,16 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form asp-page="./Index" method="get">
+    <div class=form-actions no-color>
+        <p>
+            Cauta dupa numele Membrului sau numele Instructorului:
+            <input type="text" name="searchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="search" class="btn btn-primary" /> |
+            <a asp-page="./Index"> Inapoi la lista</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +27,9 @@
                 @Html.DisplayNameFor(model => model.Member[0].LastName)
             </th>
             <th>
+                <a asp asp-page="./Index" asp-route-sortOrder="@Model.FirstNameSort">
                 @Html.DisplayNameFor(model => model.Member[0].FirstName)
+                </a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Member[0].Email)
@@ -31,16 +43,23 @@
             <th>
                 @Html.DisplayNameFor(model => model.Member[0].Membership.MembershipName)
             </th>
-            <th>
+            <th colspan="2">
+                <a asp-page="./Index" asp-route-sortOrder="@Model.TrainerNameSort">
                 @Html.DisplayNameFor(model => model.Member[0].Trainer.Name)
+                </a>
             </th>
            
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Member) {
-        <tr>
+@foreach (var item in Model.MemberData.Members) {
+    string RandSelectat="";
+    if(item.ID==Model.MemberID)
+            {
+                RandSelectat = "table-success";
+            }
+            <tr class="@RandSelectat">
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
@@ -64,6 +83,7 @@
 
             </td>
             <td>
+                <a asp-page="./Index" asp-route-id="@item.ID">Select</a>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
@@ -71,4 +91,26 @@
         </tr>
 }
     </tbody>
-</table>
+    @if (Model.MemberData.Memberships != null)
+{
+    <h3>Memberships for Selected Member</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Membership Name</th>
+                <th>Start Date</th>
+                <th>Expiration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var membership in Model.MemberData.Memberships)
+            {
+                <tr>
+                    <td>@membership.MembershipName</td>
+                    <td>@membership.Data_Start?.ToShortDateString()</td>
+                    <td>@membership.Data_Expirare?.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

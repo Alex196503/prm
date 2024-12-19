@@ -9,7 +9,7 @@ using ProiectMediiBun.Data;
 using ProiectMediiBun.Models;
 using ProiectMediiBun.Models;
 
-namespace ProiectMediiBun.Pages.Members
+namespace Proiect_Medii.Pages.Members
 {
     public class IndexModel : PageModel
     {

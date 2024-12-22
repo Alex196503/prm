@@ -39,7 +39,7 @@ namespace ProiectMediiBun.Pages.Reservations
                 return NotFound();
             }
             Reservation = reservation;
-           ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "ID", "FirstName");
+           ViewData["MemberID"] = new SelectList(_context.Set<Member>(), "ID", "LastName");
            ViewData["TerenID"] = new SelectList(_context.Set<Teren>(), "ID", "Tip");
             return Page();
         }

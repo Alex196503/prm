@@ -24,7 +24,7 @@ namespace ProiectMediiBun.Pages.Reservations
 
         public IActionResult OnGet()
         {
-        ViewData["MemberID"] = new SelectList(_context.Member, "ID", "FirstName");
+        ViewData["MemberID"] = new SelectList(_context.Member, "ID", "LastName");
         ViewData["TerenID"] = new SelectList(_context.Set<Teren>(), "ID", "Tip");
             return Page();
         }

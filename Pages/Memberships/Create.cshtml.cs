@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,8 @@ using ProiectMediiBun.Models;
 
 namespace ProiectMediiBun.Pages.Memberships
 {
+    [Authorize(Roles = "Admin")]
+
     public class CreateModel : MembershipCategoriesPageModel
     {
         private readonly ProiectMediiBun.Data.ProiectMediiBunContext _context;
